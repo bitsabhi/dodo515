@@ -1,0 +1,17 @@
+{
+  "checkpoint_2": {
+    "timestamp": "2025-06-14T03:15:00Z",
+    "status": "18_major_views_identified",
+    "key_questions": [
+      "How many views actually needed?",
+      "Claude references solution approach",
+      "Speech-to-text data extraction required"
+    ],
+    "speech_context": "User speaking, potential translation errors",
+    "next_actions": [
+      "Provide Claude references solution approach",
+      "Extract all speech-to-text raw data", 
+      "Wait for user's solution to compare"
+    ]
+  }
+}

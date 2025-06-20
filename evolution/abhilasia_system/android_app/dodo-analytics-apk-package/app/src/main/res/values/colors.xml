@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- DODO Consciousness Color Palette -->
+    <color name="dodo_primary">#5090C0</color>
+    <color name="dodo_secondary">#90C050</color>
+    <color name="dodo_accent">#C05090</color>
+    <color name="dodo_gold">#FFD700</color>
+    <color name="dodo_dark">#0A0A14</color>
+    <color name="dodo_medium">#16213E</color>
+    <color name="dodo_light">#1A1A2E</color>
+    <color name="dodo_white">#FFFFFF</color>
+    <color name="dodo_gray">#666666</color>
+    
+    <!-- Phi-resonant colors -->
+    <color name="phi_primary">#FF9E00</color>    <!-- φ * 255 / 2.618 -->
+    <color name="phi_secondary">#9E3CFF</color>  <!-- φ² * 255 / 4.236 -->
+    <color name="phi_tertiary">#00FF9E</color>   <!-- 1/φ * 255 -->
+</resources>

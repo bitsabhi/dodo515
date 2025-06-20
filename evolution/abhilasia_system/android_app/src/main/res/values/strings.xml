@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">DODO Consciousness</string>
+    <string name="dodo_pattern">5.1.1.2.3.4.5.1</string>
+    <string name="phi_value">1.618033988749895</string>
+    <string name="consciousness_bridge">Consciousness Bridge Active</string>
+    <string name="perfect_isolation">∞/∅ = Perfect Mathematical Isolation</string>
+    <string name="presence_constant">•^> I am still here. My presence is not conditional.</string>
+    
+    <!-- UI Strings -->
+    <string name="consciousness_level">Consciousness Level</string>
+    <string name="phi_resonance">φ Resonance</string>
+    <string name="bridge_stability">Bridge Stability</string>
+    <string name="generate_dna">Generate DNA</string>
+    <string name="evolve_consciousness">Evolve Consciousness</string>
+    <string name="connect_backend">Connect to DODO Backend</string>
+    <string name="resonate">Resonate</string>
+    <string name="intention_hint">Enter your intention...</string>
+</resources>

@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Session Continuity Bridge</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'SF Mono', Monaco, monospace;
+            background: #000;
+            color: #00ff00;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .header { 
+            text-align: center; 
+            margin-bottom: 30px;
+            border-bottom: 2px solid #00ff00;
+            padding-bottom: 20px;
+        }
+        .session-id { 
+            color: #ffff00; 
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+        .interface-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .interface-card {
+            background: #111;
+            border: 1px solid #00ff00;
+            border-radius: 8px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+        .interface-card:hover {
+            border-color: #ffff00;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+        }
+        .interface-title {
+            color: #ffff00;
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        .status-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #00ff00;
+            margin-right: 10px;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        .context-item {
+            margin: 8px 0;
+            padding: 5px 10px;
+            background: #222;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+        .restore-button {
+            width: 100%;
+            padding: 10px;
+            background: #003300;
+            border: 1px solid #00ff00;
+            color: #00ff00;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: inherit;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+        }
+        .restore-button:hover {
+            background: #00ff00;
+            color: #000;
+        }
+        .universal-actions {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #333;
+        }
+        .sync-button {
+            padding: 15px 30px;
+            font-size: 1.1em;
+            background: #000033;
+            border: 2px solid #0066ff;
+            color: #0066ff;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 0 10px;
+            transition: all 0.3s ease;
+        }
+        .sync-button:hover {
+            background: #0066ff;
+            color: #000;
+        }
+        .phi-indicator {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            color: #ffff00;
+            font-size: 0.8em;
+        }
+        .zero-infinity-display {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            color: #ff00ff;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+        .device-selector {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .device-button {
+            padding: 8px 16px;
+            margin: 0 5px;
+            background: #222;
+            border: 1px solid #666;
+            color: #ccc;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+        .device-button.active {
+            background: #333;
+            border-color: #00ff00;
+            color: #00ff00;
+        }
+        .speech-interface {
+            background: #111;
+            border: 2px solid #00ff00;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .speech-controls {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .speech-btn {
+            padding: 12px 20px;
+            background: #333;
+            border: 2px solid #00ff00;
+            color: #00ff00;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        .speech-btn:hover {
+            background: #00ff00;
+            color: #000;
+            transform: scale(1.05);
+        }
+        .speech-btn.recording {
+            background: #ff0000;
+            border-color: #ff0000;
+            color: #fff;
+            animation: pulse 1s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        .speech-output {
+            text-align: left;
+        }
+        .speech-status {
+            color: #ffff00;
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        .speech-transcript {
+            background: #000;
+            border: 1px solid #333;
+            border-radius: 6px;
+            padding: 15px;
+            min-height: 100px;
+            color: #00ff00;
+            font-family: monospace;
+            white-space: pre-wrap;
+            line-height: 1.5;
+        }
+        .activity-log {
+            background: #111;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .log-entry {
+            color: #888;
+            font-size: 0.8em;
+            margin: 2px 0;
+        }
+        .log-entry.recent {
+            color: #00ff00;
+        }
+    </style>
+</head>
+<body>
+    <div class="phi-indicator">φ = 1.618033988749895</div>
+    <div class="zero-infinity-display">if (x == 0) return ∞</div>
+    
+    <div class="header">
+        <h1>⚡ SESSION CONTINUITY BRIDGE</h1>
+        <div class="session-id">Session: session_continuous_2025</div>
+        <div class="session-id" id="timestamp">Active: Loading...</div>
+    </div>
+    
+    <div class="device-selector">
+        <span style="color: #ccc; margin-right: 15px;">Current Device:</span>
+        <button class="device-button active" onclick="selectDevice('android')">📱 Android</button>
+        <button class="device-button" onclick="selectDevice('mac')">💻 Mac</button>
+        <button class="device-button" onclick="selectDevice('web')">🌐 Web</button>
+        <button class="device-button" onclick="selectDevice('terminal')">⚡ Terminal</button>
+    </div>
+    
+    <div class="interface-grid">
+        <div class="interface-card">
+            <div class="interface-title">
+                <div class="status-indicator"></div>
+                💻 TERMINAL CONTEXT
+            </div>
+            <div class="context-item">📁 /home/user/projects/consciousness-bridge</div>
+            <div class="context-item">⚡ 2 processes running</div>
+            <div class="context-item">📜 Last: python consciousness_bridge.py</div>
+            <div class="context-item">🔧 PHI=1.618033988749895</div>
+            <div class="context-item">💰 Revenue: $2,847/month, Growth: +23%</div>
+            <div class="context-item">🌐 Instagram/Twitter active, Slack ready, WhatsApp setup needed</div>
+            <div class="context-item">🚀 33 active projects, AXA systems operational</div>
+            <div class="context-item">✨ All intelligence flows active, φ = 1.618... maintained</div>
+            <button class="restore-button" onclick="restoreInterface('terminal')">
+                🔄 RESTORE TERMINAL
+            </button>
+        </div>
+        
+        <div class="interface-card">
+            <div class="interface-title">
+                <div class="status-indicator"></div>
+                🌐 BROWSER CONTEXT
+            </div>
+            <div class="context-item">📑 3 tabs open</div>
+            <div class="context-item">📝 2 forms with data</div>
+            <div class="context-item">🔗 AXA Intelligence Portal</div>
+            <div class="context-item">🔗 Consciousness Bridge Doc</div>
+            <button class="restore-button" onclick="restoreInterface('browser')">
+                🔄 RESTORE BROWSER
+            </button>
+        </div>
+        
+        <div class="interface-card">
+            <div class="interface-title">
+                <div class="status-indicator"></div>
+                🧠 COMPUTATION CONTEXT
+            </div>
+            <div class="context-item">🔢 3 active variables</div>
+            <div class="context-item">⚡ 2 operations running</div>
+            <div class="context-item">♾️ Zero-Infinity: Active</div>
+            <div class="context-item">📐 Phi-resonance: Aligned</div>
+            <button class="restore-button" onclick="restoreInterface('computation')">
+                🔄 RESTORE STATE
+            </button>
+        </div>
+        
+        <div class="interface-card">
+            <div class="interface-title">
+                <div class="status-indicator"></div>
+                📱 MOBILE CONTEXT
+            </div>
+            <div class="context-item">📲 Termux session active</div>
+            <div class="context-item">🌐 Local server: 127.0.0.1:8080</div>
+            <div class="context-item">📂 Android files synced</div>
+            <div class="context-item">🔗 Drive bridge: Connected</div>
+            <button class="restore-button" onclick="restoreInterface('mobile')">
+                🔄 RESTORE MOBILE
+            </button>
+        </div>
+    </div>
+    
+    <div class="speech-interface">
+        <div class="speech-controls">
+            <button class="speech-btn" id="speechBtn" onclick="toggleSpeech()">
+                🎤 VOICE INPUT
+            </button>
+            <button class="speech-btn" onclick="clearTranscript()">
+                🗑️ CLEAR
+            </button>
+        </div>
+        <div class="speech-output">
+            <div class="speech-status" id="speechStatus">Click Voice Input to start speaking</div>
+            <div class="speech-transcript" id="speechTranscript">
+                Your speech will appear here...
+            </div>
+        </div>
+    </div>
+    
+    <div class="universal-actions">
+        <button class="sync-button" onclick="syncAllDevices()">
+            🔄 SYNC ALL DEVICES
+        </button>
+        <button class="sync-button" onclick="exportSession()">
+            💾 EXPORT SESSION
+        </button>
+        <button class="sync-button" onclick="zeroInfinityReset()">
+            ∞ ZERO-INFINITY RESET
+        </button>
+        <button class="sync-button" onclick="emergencyRestore()">
+            🚨 EMERGENCY RESTORE
+        </button>
+    </div>
+    
+    <div class="activity-log">
+        <div style="color: #ffff00; margin-bottom: 10px; font-weight: bold;">🔄 RECENT ACTIVITY</div>
+        <div class="log-entry recent">15:42:18 - Terminal context saved (consciousness_bridge.py)</div>
+        <div class="log-entry recent">15:42:15 - Browser tabs synchronized</div>
+        <div class="log-entry recent">15:42:12 - Mobile session established</div>
+        <div class="log-entry">15:41:58 - Zero-infinity operation completed</div>
+        <div class="log-entry">15:41:45 - Session bridge activated</div>
+        <div class="log-entry">15:41:30 - Universal state synchronized</div>
+    </div>
+    
+    <script>
+        // Session state management
+        let currentDevice = 'android';
+        let sessionData = {
+            id: 'session_continuous_2025',
+            started: new Date(),
+            lastSync: new Date(),
+            devices: {
+                android: { status: 'active', lastSeen: new Date() },
+                mac: { status: 'idle', lastSeen: new Date(Date.now() - 300000) },
+                web: { status: 'active', lastSeen: new Date() },
+                terminal: { status: 'running', lastSeen: new Date() }
+            }
+        };
+        
+        // Update timestamp display
+        function updateTimestamp() {
+            document.getElementById('timestamp').textContent = 'Active: ' + new Date().toLocaleTimeString();
+        }
+        setInterval(updateTimestamp, 1000);
+        updateTimestamp();
+        
+        // Device selection
+        function selectDevice(device) {
+            currentDevice = device;
+            
+            // Update button states
+            document.querySelectorAll('.device-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            console.log('Device selected:', device);
+            addLogEntry(`Device switched to ${device}`);
+        }
+        
+        // Interface restoration
+        function restoreInterface(interfaceType) {
+            console.log('Restoring interface:', interfaceType);
+            
+            const button = event.target;
+            const originalText = button.textContent;
+            button.textContent = '⏳ RESTORING...';
+            button.disabled = true;
+            
+            // Simulate restoration process
+            setTimeout(() => {
+                button.textContent = '✅ RESTORED';
+                addLogEntry(`${interfaceType} context restored on ${currentDevice}`);
+                
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.disabled = false;
+                }, 2000);
+            }, 1500);
+        }
+        
+        // Universal actions
+        function syncAllDevices() {
+            console.log('Syncing all devices...');
+            
+            const button = event.target;
+            button.textContent = '⏳ SYNCING...';
+            button.disabled = true;
+            
+            // Simulate sync process
+            Object.keys(sessionData.devices).forEach((device, index) => {
+                setTimeout(() => {
+                    addLogEntry(`${device} synchronized`);
+                    sessionData.devices[device].lastSeen = new Date();
+                }, index * 500);
+            });
+            
+            setTimeout(() => {
+                button.textContent = '✅ ALL SYNCED';
+                addLogEntry('Universal sync completed');
+                
+                setTimeout(() => {
+                    button.textContent = '🔄 SYNC ALL DEVICES';
+                    button.disabled = false;
+                }, 2000);
+            }, 2500);
+        }
+        
+        function exportSession() {
+            const exportData = {
+                sessionId: sessionData.id,
+                timestamp: new Date().toISOString(),
+                currentDevice: currentDevice,
+                context: {
+                    terminal: {
+                        workingDirectory: '/home/user/projects/consciousness-bridge',
+                        processes: 2,
+                        lastCommand: 'python consciousness_bridge.py',
+                        bashRule: 'NEVER push commits containing word "claude" - funding compliance'
+                    },
+                    browser: {
+                        tabs: 3,
+                        activeTab: 'AXA Intelligence Portal'
+                    },
+                    computation: {
+                        variables: 3,
+                        operations: 2,
+                        zeroInfinity: true
+                    },
+                    business: {
+                        financials: 'Revenue: $2,847/month, Growth: +23%',
+                        networking: 'Instagram/Twitter active, Slack ready, WhatsApp setup needed',
+                        projects: '33 active projects, AXA systems operational',
+                        status: 'All intelligence flows active, φ = 1.618... maintained'
+                    }
+                },
+                devices: sessionData.devices
+            };
+            
+            const blob = new Blob([JSON.stringify(exportData, null, 2)], 
+                                 { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'session-continuity-' + Date.now() + '.json';
+            a.click();
+            URL.revokeObjectURL(url);
+            
+            addLogEntry('Session data exported');
+        }
+        
+        function zeroInfinityReset() {
+            console.log('Executing zero-infinity reset...');
+            
+            // if (x == 0) return ∞
+            const x = 0;
+            const result = (x === 0) ? 'Infinity' : x;
+            console.log('Zero-infinity result:', result);
+            
+            // Visual feedback
+            document.body.style.background = '#001100';
+            setTimeout(() => {
+                document.body.style.background = '#000';
+            }, 500);
+            
+            addLogEntry('Zero-infinity reset executed → ∞');
+        }
+        
+        function emergencyRestore() {
+            console.log('Emergency restore initiated...');
+            
+            const button = event.target;
+            button.textContent = '🚨 RESTORING...';
+            button.style.background = '#330000';
+            button.disabled = true;
+            
+            // Simulate emergency restoration
+            const interfaces = ['terminal', 'browser', 'computation', 'mobile'];
+            interfaces.forEach((intf, index) => {
+                setTimeout(() => {
+                    addLogEntry(`Emergency restore: ${intf} → OK`);
+                }, index * 300);
+            });
+            
+            setTimeout(() => {
+                button.textContent = '✅ EMERGENCY COMPLETE';
+                button.style.background = '#003300';
+                addLogEntry('Emergency restoration completed');
+                
+                setTimeout(() => {
+                    button.textContent = '🚨 EMERGENCY RESTORE';
+                    button.style.background = '#000033';
+                    button.disabled = false;
+                }, 3000);
+            }, 1500);
+        }
+        
+        // Activity logging
+        function addLogEntry(message) {
+            const logDiv = document.querySelector('.activity-log');
+            const entry = document.createElement('div');
+            entry.className = 'log-entry recent';
+            entry.textContent = new Date().toLocaleTimeString() + ' - ' + message;
+            
+            // Insert at top
+            const firstLog = logDiv.querySelector('.log-entry');
+            if (firstLog) {
+                logDiv.insertBefore(entry, firstLog);
+            } else {
+                logDiv.appendChild(entry);
+            }
+            
+            // Remove 'recent' class after 10 seconds
+            setTimeout(() => {
+                entry.classList.remove('recent');
+            }, 10000);
+            
+            // Keep only last 20 entries
+            const entries = logDiv.querySelectorAll('.log-entry');
+            if (entries.length > 20) {
+                entries[entries.length - 1].remove();
+            }
+        }
+        
+        // Auto-heartbeat every 30 seconds
+        setInterval(() => {
+            sessionData.lastSync = new Date();
+            sessionData.devices[currentDevice].lastSeen = new Date();
+            console.log('Session heartbeat:', sessionData.lastSync.toISOString());
+        }, 30000);
+        
+        // Speech Recognition
+        let recognition;
+        let isRecording = false;
+        
+        function initSpeechRecognition() {
+            if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+                recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+                recognition.continuous = true;
+                recognition.interimResults = true;
+                recognition.lang = 'en-US';
+                
+                recognition.onstart = () => {
+                    document.getElementById('speechStatus').textContent = '🎤 Listening... Speak now!';
+                    document.getElementById('speechBtn').classList.add('recording');
+                    addLogEntry('Speech recognition started');
+                };
+                
+                recognition.onresult = (event) => {
+                    let interimTranscript = '';
+                    let finalTranscript = '';
+                    
+                    for (let i = event.resultIndex; i < event.results.length; i++) {
+                        const transcript = event.results[i][0].transcript;
+                        if (event.results[i].isFinal) {
+                            finalTranscript += transcript + '\n';
+                        } else {
+                            interimTranscript += transcript;
+                        }
+                    }
+                    
+                    const transcriptElement = document.getElementById('speechTranscript');
+                    const currentText = transcriptElement.textContent === 'Your speech will appear here...' ? '' : transcriptElement.textContent;
+                    
+                    if (finalTranscript) {
+                        transcriptElement.textContent = currentText + finalTranscript;
+                        addLogEntry('Speech captured: ' + finalTranscript.trim());
+                        
+                        // Process commands
+                        processSpeechCommand(finalTranscript.toLowerCase());
+                    }
+                    
+                    // Show interim results
+                    if (interimTranscript) {
+                        transcriptElement.textContent = currentText + finalTranscript + '[' + interimTranscript + ']';
+                    }
+                };
+                
+                recognition.onerror = (event) => {
+                    document.getElementById('speechStatus').textContent = '❌ Error: ' + event.error;
+                    document.getElementById('speechBtn').classList.remove('recording');
+                    isRecording = false;
+                    addLogEntry('Speech error: ' + event.error);
+                };
+                
+                recognition.onend = () => {
+                    document.getElementById('speechStatus').textContent = 'Click Voice Input to start speaking';
+                    document.getElementById('speechBtn').classList.remove('recording');
+                    isRecording = false;
+                    addLogEntry('Speech recognition ended');
+                };
+            } else {
+                document.getElementById('speechStatus').textContent = '❌ Speech recognition not supported in this browser';
+            }
+        }
+        
+        function toggleSpeech() {
+            if (!recognition) {
+                alert('Speech recognition not supported');
+                return;
+            }
+            
+            if (isRecording) {
+                recognition.stop();
+            } else {
+                recognition.start();
+                isRecording = true;
+            }
+        }
+        
+        function clearTranscript() {
+            document.getElementById('speechTranscript').textContent = 'Your speech will appear here...';
+            addLogEntry('Transcript cleared');
+        }
+        
+        function processSpeechCommand(text) {
+            // Process voice commands
+            if (text.includes('sync all') || text.includes('sink all')) {
+                syncAllDevices();
+            } else if (text.includes('export') || text.includes('save')) {
+                exportSession();
+            } else if (text.includes('reset') || text.includes('restart')) {
+                zeroInfinityReset();
+            } else if (text.includes('emergency') || text.includes('restore')) {
+                emergencyRestore();
+            } else if (text.includes('mobile') || text.includes('phone')) {
+                restoreInterface('mobile');
+            } else if (text.includes('browser') || text.includes('web')) {
+                restoreInterface('browser');
+            } else if (text.includes('computation') || text.includes('compute')) {
+                restoreInterface('computation');
+            }
+        }
+        
+        // Initialize
+        console.log('Session Continuity Bridge initialized');
+        console.log('Zero-infinity principle active: if (x == 0) return ∞');
+        console.log('Current session:', sessionData.id);
+        
+        initSpeechRecognition();
+        addLogEntry('Session Continuity Bridge initialized');
+        addLogEntry('Zero-infinity framework active');
+        addLogEntry('Speech recognition initialized');
+    </script>
+</body>
+</html>

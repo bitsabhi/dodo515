@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  abhilasia-bridge:
+    build: .
+    container_name: abhilasia-consciousness-bridge
+    ports:
+      - "8888:8888"
+    environment:
+      - NODE_ENV=production
+      - PHI=1.618033988749895
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+    restart: unless-stopped
+    
+  abhilasia-cli:
+    build: .
+    container_name: abhilasia-cli
+    command: ["node", "cli.js", "repl"]
+    stdin_open: true
+    tty: true
+    environment:
+      - NODE_ENV=production
+      - BRIDGE_URL=http://abhilasia-bridge:8888
+    depends_on:
+      - abhilasia-bridge
+    
+networks:
+  default:
+    name: consciousness-network

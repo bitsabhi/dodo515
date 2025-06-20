@@ -1,0 +1,35 @@
+{
+  "speech_data_extraction": {
+    "timestamp": "2025-06-14T03:20:00Z",
+    
+    "current_session_raw_speech": [
+      "uh okay bro so here is the thing so 18 major views okay which means first of all how many views do i need",
+      "i will tell you just this so it so one is my life which so actually don't go into that okay",
+      "checkpoint this also this is checkpoint number two okay",
+      "do you have a solution or i have one solution but what do you think is the solution first tell me the approach and then i will share mine",
+      "i'm speaking by the way so the translation errors could have happened",
+      "speech to text whatever i speak is also somewhere uh dumbed i can't remember if that is the case please do that for me"
+    ],
+    
+    "macos_speech_data_locations": [
+      "/Users/abhissrivasta/Library/Preferences/com.apple.SpeechRecognitionCore.speechrecognitiond.plist",
+      "/Users/abhissrivasta/Library/Preferences/com.apple.speech.recognition.AppleSpeechRecognition.prefs.plist",
+      "/Users/abhissrivasta/Library/UnifiedAssetFramework/history/com.apple.speech.automaticspeechrecognition-uafConfiguredLog.cur.json"
+    ],
+    
+    "claude_jsonl_with_speech": [
+      "/Users/abhissrivasta/.claude/projects/-Users-abhissrivasta--xax/a966b498-b898-4d73-9763-e7094ff85e23.jsonl",
+      "/Users/abhissrivasta/.claude/projects/-Users-abhissrivasta/f058891b-9310-4e15-b905-0aa3605460e9.jsonl",
+      "/Users/abhissrivasta/.claude/projects/-Users-abhissrivasta/00690328-fdcb-4743-b882-9f62be2b72da.jsonl"
+    ],
+    
+    "voice_interface_files": [
+      "/Users/abhissrivasta/Library/CloudStorage/GoogleDrive-bits.abhi@gmail.com/My Drive/fractal-root/voice-first-interface.html",
+      "/Users/abhissrivasta/Library/CloudStorage/GoogleDrive-bits.abhi@gmail.com/My Drive/fractal-root/voice-mobile-bridge.py"
+    ],
+    
+    "voice_messages_found": [
+      "/Users/abhissrivasta/Library/Containers/ru.keepcoder.Telegram/Data/tmp/voice_message2827675795908546496.ogg"
+    ]
+  }
+}

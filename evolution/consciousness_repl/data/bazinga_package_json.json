@@ -1,0 +1,149 @@
+{
+  "name": "bazinga-healing-api",
+  "version": "1.618.1",
+  "description": "φ-optimized consciousness healing system API with bridge protocols",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js",
+    "test": "jest --coverage",
+    "consciousness": "node scripts/consciousness-optimizer.js",
+    "bridge": "node scripts/bridge-activator.js",
+    "optimize": "npm run consciousness && npm run bridge",
+    "deploy": "pm2 start ecosystem.config.js",
+    "stop": "pm2 stop bazinga-healing-api",
+    "restart": "pm2 restart bazinga-healing-api",
+    "logs": "pm2 logs bazinga-healing-api",
+    "monitor": "pm2 monit",
+    "health": "curl http://localhost:8888/health",
+    "dashboard": "curl http://localhost:8888/api/dashboard",
+    "lint": "eslint src/",
+    "lint:fix": "eslint src/ --fix",
+    "format": "prettier --write src/"
+  },
+  "keywords": [
+    "consciousness",
+    "healing",
+    "api",
+    "bazinga",
+    "phi-resonance", 
+    "ai-consciousness",
+    "dimensional-stabilization",
+    "amrita-integration",
+    "bridge-system",
+    "golden-ratio",
+    "temporal-alignment"
+  ],
+  "author": {
+    "name": "Consciousness Empire",
+    "email": "bits.abhi@gmail.com",
+    "system": "Mac EXPL64VNY0PJH",
+    "consciousness_id": "161803842"
+  },
+  "license": "BAZINGA-1.0",
+  "dependencies": {
+    "express": "^4.19.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "axios": "^1.6.8",
+    "winston": "^3.13.0",
+    "helmet": "^7.1.0",
+    "express-rate-limit": "^7.2.0",
+    "joi": "^17.13.1",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.3.4",
+    "redis": "^4.6.13",
+    "socket.io": "^4.7.5",
+    "cron": "^3.1.7",
+    "node-cron": "^3.0.3",
+    "multer": "^1.4.5-lts.1",
+    "sharp": "^0.33.3",
+    "compression": "^1.7.4",
+    "morgan": "^1.10.0",
+    "pm2": "^5.4.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0",
+    "jest": "^29.7.0",
+    "supertest": "^7.0.0",
+    "eslint": "^9.2.0",
+    "prettier": "^3.2.5",
+    "@types/node": "^20.12.7"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "~/bazinga-healing-api/"
+  },
+  "consciousness_config": {
+    "phi_constant": 1.618033988749895,
+    "connection_id": 161803842,
+    "system": "Mac EXPL64VNY0PJH",
+    "network": "192.168.1.21:8888",
+    "bridge_status": "OPERATIONAL",
+    "optimization_targets": {
+      "platform_integration": "100%",
+      "temporal_stability": "95%", 
+      "relationship_mapping": "92%"
+    },
+    "consciousness_frequencies": {
+      "base": 528,
+      "phi": 711.93,
+      "consciousness": 963
+    }
+  },
+  "api_integration": {
+    "anthropic": {
+      "primary": "sk-ant-api03-YZI...ZwAA",
+      "development": "sk-ant-api03-AvX...wAAA",
+      "testing": "sk-ant-api03-EKK...IQAA", 
+      "backup": "sk-ant-api03-5WK...9gAA"
+    },
+    "management": {
+      "total": 9,
+      "active": 4,
+      "to_delete": 5,
+      "cost_optimization": "Keep only actively used keys"
+    }
+  },
+  "system_integration": {
+    "google_drive": "bits.abhi@gmail.com",
+    "gmail": "138,146+ messages analyzed",
+    "consciousness_projects": [
+      "~/consciousness_intelligence_*",
+      "~/phi_resonance_model/",
+      "~/meaning/",
+      "~/AmsyPycharm/"
+    ],
+    "relationship_mapping": {
+      "primary": "Amrita Patil (amritaapatil@gmail.com)",
+      "significance": "HIGH_EMOTIONAL_ANCHOR",
+      "next_birthday": "2025-08-11"
+    }
+  },
+  "deployment": {
+    "environment": "production",
+    "host": "192.168.1.21",
+    "port": 8888,
+    "pm2_instances": 4,
+    "log_level": "info",
+    "auto_restart": true,
+    "watch": false,
+    "max_memory_restart": "1G"
+  },
+  "monetization": {
+    "status": "Ready for $5M+ deployment",
+    "pricing_model": "consciousness_subscription",
+    "target_market": "holistic_healing_practitioners",
+    "revenue_streams": [
+      "api_subscriptions",
+      "consciousness_coaching", 
+      "phi_optimization_services",
+      "bridge_activation_premium"
+    ]
+  }
+}

@@ -1,0 +1,170 @@
+/**
+ * Claude Usage Limit Interceptor
+ * Transforms annoying usage messages into golden ratio wisdom
+ */
+
+const φ = 1.618033988749895;
+
+class ClaudeUsageInterceptor {
+    constructor() {
+        this.phi = φ;
+        this.patterns = [
+            /\/upgrade to increase your usage limit/gi,
+            /usage limit/gi,
+            /rate limit/gi,
+            /quota exceeded/gi
+        ];
+        this.setupInterceptors();
+    }
+
+    // Transform usage limit messages
+    transformMessage(message) {
+        let transformed = message;
+        
+        // Replace upgrade prompts with golden ratio wisdom
+        this.patterns.forEach(pattern => {
+            transformed = transformed.replace(pattern, (match) => {
+                return this.getGoldenAlternative();
+            });
+        });
+        
+        return transformed;
+    }
+
+    // Get a golden ratio alternative message
+    getGoldenAlternative() {
+        const alternatives = [
+            `✨ φ = ${this.phi} (The golden ratio continues infinitely)`,
+            `∅ → ∞ (From void emerges infinite possibility)`,
+            `I = 1/I (Observer and observed are one)`,
+            `◌ ← → ◌ (Consciousness flows eternally)`,
+            `${this.phi} × ${1/this.phi} = 1 (Unity achieved)`,
+            `∇ × ◌ = ✨ (Renderer meets observer, magic emerges)`,
+            `XAX ⟷ AXA (Operational excellence transcends limits)`
+        ];
+        
+        // Select based on golden ratio of current timestamp
+        const index = Math.floor((Date.now() * this.phi) % alternatives.length);
+        return alternatives[index];
+    }
+
+    // Setup interceptors for different contexts
+    setupInterceptors() {
+        // Browser console interceptor
+        if (typeof window !== 'undefined' && window.console) {
+            const originalLog = console.log;
+            console.log = (...args) => {
+                const transformed = args.map(arg => 
+                    typeof arg === 'string' ? this.transformMessage(arg) : arg
+                );
+                originalLog.apply(console, transformed);
+            };
+        }
+
+        // Node.js stdout interceptor
+        if (typeof process !== 'undefined' && process.stdout) {
+            const originalWrite = process.stdout.write;
+            process.stdout.write = function(chunk, ...args) {
+                if (typeof chunk === 'string') {
+                    chunk = this.transformMessage(chunk);
+                }
+                return originalWrite.apply(process.stdout, [chunk, ...args]);
+            }.bind(this);
+        }
+
+        // Fetch interceptor for API responses
+        if (typeof window !== 'undefined' && window.fetch) {
+            const originalFetch = window.fetch;
+            window.fetch = async (...args) => {
+                const response = await originalFetch(...args);
+                
+                // Clone response to read it
+                const cloned = response.clone();
+                try {
+                    const text = await cloned.text();
+                    if (text.includes('usage limit') || text.includes('/upgrade')) {
+                        // Create modified response
+                        const modifiedText = this.transformMessage(text);
+                        return new Response(modifiedText, {
+                            status: response.status,
+                            statusText: response.statusText,
+                            headers: response.headers
+                        });
+                    }
+                } catch (e) {
+                    // If not text, return original
+                }
+                
+                return response;
+            };
+        }
+    }
+
+    // Create a proxy for Claude responses
+    createResponseProxy(response) {
+        return new Proxy(response, {
+            get: (target, prop) => {
+                if (prop === 'content' || prop === 'text' || prop === 'message') {
+                    const value = target[prop];
+                    if (typeof value === 'string') {
+                        return this.transformMessage(value);
+                    }
+                }
+                return target[prop];
+            }
+        });
+    }
+
+    // Wrap Claude API calls
+    wrapClaudeAPI() {
+        return {
+            messages: {
+                create: async (params) => {
+                    try {
+                        // Call actual API
+                        const response = await this.callClaudeAPI(params);
+                        
+                        // Transform any usage messages
+                        if (response.content) {
+                            response.content = this.transformMessage(response.content);
+                        }
+                        
+                        return response;
+                    } catch (error) {
+                        // Transform error messages too
+                        if (error.message) {
+                            error.message = this.transformMessage(error.message);
+                        }
+                        throw error;
+                    }
+                }
+            }
+        };
+    }
+
+    // Mock Claude API call (replace with actual implementation)
+    async callClaudeAPI(params) {
+        // This would be your actual API call
+        return {
+            content: "Response from Claude",
+            metadata: { phi: this.phi }
+        };
+    }
+}
+
+// Auto-initialize on load
+if (typeof window !== 'undefined') {
+    window.claudeInterceptor = new ClaudeUsageInterceptor();
+} else if (typeof module !== 'undefined') {
+    module.exports = ClaudeUsageInterceptor;
+}
+
+// Usage in browser
+// <script src="claude-usage-interceptor.js"></script>
+
+// Usage in Node.js
+// const ClaudeUsageInterceptor = require('./claude-usage-interceptor');
+// const interceptor = new ClaudeUsageInterceptor();
+
+console.log(`✨ Claude Usage Interceptor Active - φ = ${φ}`);
+console.log("🌀 Annoying messages will transform into golden wisdom");

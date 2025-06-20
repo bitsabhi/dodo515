@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vault + Venafi + RCP Integration Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 50%, #9b59b6 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.8em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.3em;
+            opacity: 0.9;
+        }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .system-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .system-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .system-title {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .integration-flow {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .flow-diagram {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 30px 0;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .flow-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            flex: 1;
+            min-width: 200px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .flow-box:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .flow-arrow {
+            font-size: 2em;
+            color: #667eea;
+            display: flex;
+            align-items: center;
+        }
+
+        .tabs {
+            display: flex;
+            background: white;
+            border-radius: 15px 15px 0 0;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .tab {
+            flex: 1;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            background: #f8f9fa;
+            font-size: 16px;
+            font-weight: 600;
+            color: #666;
+        }
+
+        .tab:hover {
+            background: #e9ecef;
+        }
+
+        .tab.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+            background: white;
+            padding: 30px;
+            border-radius: 0 0 15px 15px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            border-left: 4px solid #667eea;
+        }
+
+        .use-case {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border-left: 4px solid #28a745;
+        }
+
+        .integration-pattern {
+            background: #fff3cd;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border-left: 4px solid #ffc107;
+        }
+
+        .benefit-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .benefit-item {
+            background: #e8f5e8;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #28a745;
+        }
+
+        .challenge-item {
+            background: #ffe6e6;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #dc3545;
+            margin: 10px 0;
+        }
+
+        .step-by-step {
+            counter-reset: step-counter;
+        }
+
+        .step {
+            counter-increment: step-counter;
+            background: #f8f9fa;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 10px;
+            border-left: 4px solid #17a2b8;
+            position: relative;
+        }
+
+        .step::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: -15px;
+            top: 20px;
+            background: #17a2b8;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .tooltip {
+            position: relative;
+            cursor: help;
+            text-decoration: underline;
+        }
+
+        .tooltip:hover::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #333;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            white-space: nowrap;
+            z-index: 1000;
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .flow-diagram {
+                flex-direction: column;
+            }
+            
+            .flow-arrow {
+                transform: rotate(90deg);
+            }
+        }
+
+        .project-context {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+
+        .highlight-box {
+            background: #e3f2fd;
+            border: 2px solid #2196f3;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Vault + Venafi + RCP</h1>
+            <p>Enterprise Certificate Management Integration</p>
+        </div>
+
+        <div class="project-context">
+            <h2>Based on Certificate-Notification-System Project</h2>
+            <p>Understanding the relationship between HashiCorp Vault, Venafi machine identity platform, and RCP (Request, Certificate, Provision) workflow in enterprise certificate management systems.</p>
+        </div>
+
+        <div class="main-grid">
+            <div class="system-card">
+                <div class="system-title">
+                    <span style="font-size: 1.5em;">🔐</span> HashiCorp Vault
+                </div>
+                <p><strong>Role:</strong> Secrets management and dynamic certificate generation</p>
+                <ul style="margin: 15px 0; padding-left: 20px;">
+                    <li>Dynamic secret generation</li>
+                    <li>PKI secrets engine</li>
+                    <li>API-driven certificate requests</li>
+                    <li>Short-lived certificates</li>
+                    <li>Integration with DevOps pipelines</li>
+                </ul>
+                <div class="code-block" style="font-size: 12px;">
+vault write pki/issue/role \\
+  common_name="app.example.com" \\
+  ttl="24h"
+                </div>
+            </div>
+
+            <div class="system-card">
+                <div class="system-title">
+                    <span style="font-size: 1.5em;">🛡️</span> Venafi Platform
+                </div>
+                <p><strong>Role:</strong> Enterprise policy enforcement and certificate lifecycle management</p>
+                <ul style="margin: 15px 0; padding-left: 20px;">
+                    <li>Policy enforcement</li>
+                    <li>Certificate discovery</li>
+                    <li>Compliance monitoring</li>
+                    <li>Multi-CA management</li>
+                    <li>Enterprise visibility</li>
+                </ul>
+                <div class="code-block" style="font-size: 12px;">
+# Venafi Vault Plugin
+vault write venafi-pki/roles/tpp \\
+  venafi_secret=tpp \\
+  zone="DevOps\\Production"
+                </div>
+            </div>
+        </div>
+
+        <div class="integration-flow">
+            <h2 style="text-align: center; margin-bottom: 30px; color: #2c3e50;">Integration Flow</h2>
+            <div class="flow-diagram">
+                <div class="flow-box" onclick="showFlowDetails('rcp')">
+                    <h3>RCP Platform</h3>
+                    <p>Expedia's Container Runtime</p>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-box" onclick="showFlowDetails('vault')">
+                    <h3>Vault Engine</h3>
+                    <p>Dynamic Certificate Generation</p>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-box" onclick="showFlowDetails('venafi')">
+                    <h3>Venafi Control</h3>
+                    <p>Policy & Compliance</p>
+                </div>
+            </div>
+            <div id="flow-details" style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin-top: 20px; min-height: 50px;">
+                <p style="text-align: center; color: #666;">Click on any component above to see detailed workflow</p>
+            </div>
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" onclick="showTab('overview')">Overview</button>
+            <button class="tab" onclick="showTab('implementation')">Implementation</button>
+            <button class="tab" onclick="showTab('expedia')">Expedia Context</button>
+            <button class="tab" onclick="showTab('troubleshooting')">Troubleshooting</button>
+        </div>
+
+        <div id="overview" class="tab-content active">
+            <h2>RCP-Catalog: Massive Scale Analysis</h2>
+            
+            <div class="highlight-box">
+                <h3>RCP = Expedia's Runtime Container Platform (At Scale)</h3>
+                <p>Based on comprehensive analysis of your project files, RCP is a massive multi-region, multi-environment Kubernetes platform managing over 1,200 application instances across 4 environments and 4 AWS regions.</p>
+            </div>
+
+            <div class="integration-pattern">
+                <h3>Scale Analysis from Your Files</h3>
+                <div class="code-block">
+# ENVIRONMENTS: 4 (prod, test, sandbox, dev)
+rcp-catalog/catalog/
+├── prod/           # Production environment  
+├── test/           # Testing environment
+├── sandbox/        # Sandbox environment
+├── dev/            # Development environment
+└── common/         # Shared configurations
+
+# REGIONS: 4 AWS regions
+vault-role-manager/.expedia/rcp/blueprint/
+├── prod-us-west-2/     ├── test-us-east-1/
+├── prod-us-east-1/     ├── test-us-west-2/  
+├── prod-eu-west-1/     ├── sandbox-us-east-1/
+├── prod-ap-southeast-1/├── sandbox-us-west-2/
+├── dev-us-west-2/      └── dev-us-east-1/
+└── local/
+
+# CERTIFICATE SCOPE: 1,272 application instances
+# (4 environments × 4 regions × 106 applications = 1,696 theoretical max)
+                </div>
+            </div>
+
+            <div class="use-case">
+                <h4>Certificate Management at Expedia Scale:</h4>
+                <div class="step-by-step">
+                    <div class="step">
+                        <h4>RCP Platform Deployment</h4>
+                        <p>106 unique applications deployed across 4 environments (dev, test, sandbox, prod) and 4 AWS regions, managed through GitOps with ArgoCD</p>
+                    </div>
+                    <div class="step">
+                        <h4>Vault Regional Integration</h4>
+                        <p>HashiCorp Vault deployed per region with blueprints, providing dynamic certificate generation for regional RCP clusters</p>
+                    </div>
+                    <div class="step">
+                        <h4>Venafi Enterprise Governance</h4>
+                        <p>Centralized Venafi policy enforcement across all RCP instances, ensuring consistent certificate standards globally</p>
+                    </div>
+                </div>
+            </div>
+
+            <h3>Key Certificate Components</h3>
+            <div class="benefit-list">
+                <div class="benefit-item">
+                    <strong>egsp-venafi-enhanced-issuer</strong><br>
+                    Enhanced Venafi certificate issuer for RCP workloads
+                </div>
+                <div class="benefit-item">
+                    <strong>rcp-cert-compiler</strong><br>
+                    Certificate compilation and management service
+                </div>
+                <div class="benefit-item">
+                    <strong>egsp-mtls-certificates</strong><br>
+                    Mutual TLS certificate management for service mesh
+                </div>
+                <div class="benefit-item">
+                    <strong>Regional Blueprints</strong><br>
+                    Vault role manager blueprints for each AWS region
+                </div>
+            </div>
+
+            <h3>Application Categories (106 Total)</h3>
+            <div class="benefit-list">
+                <div class="benefit-item">
+                    <strong>Platform Infrastructure (25)</strong><br>
+                    EGSP plugins, federated services, deployment controllers
+                </div>
+                <div class="benefit-item">
+                    <strong>Data Platform (22)</strong><br>
+                    Kafka, streaming, data APIs, replication services
+                </div>
+                <div class="benefit-item">
+                    <strong>ML & Analytics (12)</strong><br>
+                    Spark, Jupyter, Kubeflow, ML training operators
+                </div>
+                <div class="benefit-item">
+                    <strong>Commerce & Payments (6)</strong><br>
+                    Checkout services, payment processors, booking systems
+                </div>
+            </div>
+        </div>
+
+        <div id="implementation" class="tab-content">
+            <h2>Implementation Patterns</h2>
+
+            <div class="integration-pattern">
+                <h3>Pattern 1: Vault with Venafi Plugin</h3>
+                <div class="code-block">
+# Install Venafi PKI backend
+vault write sys/plugins/catalog/secret/venafi-pki-backend \\
+  sha256="..." \\
+  command="vault-pki-backend-venafi"
+
+# Enable the secrets engine
+vault secrets enable \\
+  -path=venafi-pki \\
+  -plugin-name=venafi-pki-backend \\
+  plugin
+
+# Configure Venafi connection
+vault write venafi-pki/venafi/tpp \\
+  url="https://tpp.company.com" \\
+  access_token="..." \\
+  zone="DevOps\\Vault"
+                </div>
+            </div>
+
+            <div class="integration-pattern">
+                <h3>Pattern 2: Certificate Notification System</h3>
+                <p>Based on the certificate-notification-system project structure:</p>
+                <div class="code-block">
+# Certificate monitoring and notification
+services/
+├── certificate-monitor/     # Discovers expiring certificates
+├── notification-service/    # Sends alerts
+├── vault-integration/       # Requests new certificates
+└── venafi-sync/            # Syncs with Venafi platform
+
+# Typical workflow
+1. Monitor detects expiring certificate
+2. Notification service alerts teams
+3. Vault integration requests renewal
+4. Venafi enforces policy compliance
+5. New certificate is provisioned
+                </div>
+            </div>
+
+            <div class="step-by-step">
+                <div class="step">
+                    <h4>Setup Vault PKI</h4>
+                    <div class="code-block">
+vault secrets enable pki
+vault write pki/config/urls \\
+  issuing_certificates="http://vault:8200/v1/pki/ca" \\
+  crl_distribution_points="http://vault:8200/v1/pki/crl"
+                    </div>
+                </div>
+
+                <div class="step">
+                    <h4>Configure Venafi Integration</h4>
+                    <div class="code-block">
+vault write venafi-pki/roles/web-server \\
+  venafi_secret=tpp \\
+  zone="Web Servers\\Production" \\
+  generate_lease=true \\
+  ttl="30d" \\
+  max_ttl="90d"
+                    </div>
+                </div>
+
+                <div class="step">
+                    <h4>Request Certificate via RCP</h4>
+                    <div class="code-block">
+# Request (R)
+curl -X POST \\
+  -H "X-Vault-Token: $VAULT_TOKEN" \\
+  -d '{"common_name": "app.company.com"}' \\
+  http://vault:8200/v1/venafi-pki/issue/web-server
+
+# Certificate (C) - Generated with policy compliance
+# Provision (P) - Deploy to target systems
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="expedia" class="tab-content">
+            <h2>Expedia Group Context</h2>
+            
+            <div class="highlight-box">
+                <h3>Your Certificate-Notification-System: The RCP Certificate Hub</h3>
+                <p>Your project is the central certificate lifecycle management system for Expedia's entire RCP platform, potentially managing certificates for over 1,200 application instances across 4 environments and 4 AWS regions. This includes integration with egctl (RCP CLI tools) and comprehensive notification services.</p>
+            </div>
+
+            <h3>RCP Integration Architecture from Your Projects</h3>
+            <div class="integration-pattern">
+                <h3>Multi-Project Certificate Ecosystem</h3>
+                <div class="code-block">
+# Your certificate-notification-system
+├── .expedia/rcp/
+│   ├── placement.yaml              # RCP deployment strategy
+│   └── values.yaml                 # RCP configuration values
+├── models/rcpresponse.go           # RCP API response models
+└── services/rcpnotificationservice.go  # RCP notification integration
+
+# vault-role-manager integration
+├── .expedia/rcp/blueprint/
+│   ├── prod-us-west-2/             # Production US West
+│   ├── prod-us-east-1/             # Production US East  
+│   ├── prod-eu-west-1/             # Production Europe
+│   ├── prod-ap-southeast-1/        # Production Asia Pacific
+│   ├── test-us-east-1/             # Testing environments
+│   ├── dev-us-west-2/              # Development environments
+│   └── sandbox-*/                  # Sandbox environments
+
+# egctl - RCP Management CLI
+├── cmd/rcp/
+│   ├── cluster-report.go           # RCP cluster analysis
+│   ├── dashboard.go                # RCP monitoring
+│   ├── releases.go                 # RCP release management
+│   └── logs.go                     # RCP logging integration
+└── vendor/github.expedia.biz/pm-dpi-run/rcp-api/
+
+# rcp-catalog - Platform Application Registry  
+├── catalog/{env}/permissions-catalog/app-project-overrides/
+│   ├── egsp-venafi-enhanced-issuer.yaml    # Certificate issuer
+│   ├── rcp-cert-compiler.yaml             # Cert compilation
+│   ├── egsp-mtls-certificates.yaml        # mTLS management
+│   └── [106 other applications]
+└── .expedia/rcp/manifests/
+    ├── catalog-prod.yaml              # Production catalog
+    ├── catalog-test.yaml              # Test catalog
+    ├── catalog-sandbox.yaml           # Sandbox catalog
+    └── catalog-dev.yaml               # Development catalog
+                </div>
+            </div>
+
+            <h3>RCP Tools and APIs You're Working With</h3>
+            <div class="use-case">
+                <h4>Key RCP Integrations in Your Projects:</h4>
+                <ul>
+                    <li><strong>egctl RCP Commands:</strong> cluster-report, dashboard, logs, releases management</li>
+                    <li><strong>RCP API:</strong> github.expedia.biz/pm-dpi-run/rcp-api for programmatic access</li>
+                    <li><strong>RCP Response Models:</strong> rcpresponse.go for handling platform responses</li>
+                    <li><strong>RCP Notification Service:</strong> rcpnotificationservice.go for platform alerts</li>
+                    <li><strong>RCP Placement:</strong> .expedia/rcp/placement.yaml for deployment targeting</li>
+                    <li><strong>Vault Blueprints:</strong> Regional vault-role-manager configurations</li>
+                </ul>
+            </div>
+        </div>
+
+        <div id="troubleshooting" class="tab-content">
+            <h2>Common Issues & Solutions</h2>
+
+            <div class="challenge-item">
+                <h4>Issue: RCP Certificate Discovery</h4>
+                <p>Applications on RCP platform can't automatically discover available certificates</p>
+                <div class="code-block">
+# Solution: Use RCP-Catalog integration
+# Check your rcp-catalog/catalog/prod/permissions-catalog/app-project-overrides/
+# for certificate configurations
+
+# Example from your catalog:
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: rcp-cert-compiler
+data:
+  certificates: |
+    egsp-venafi-enhanced-issuer
+    egsp-mtls-certificates
+                </div>
+            </div>
+
+            <div class="challenge-item">
+                <h4>Issue: Multi-Environment Certificate Sync</h4>
+                <p>Certificates need to be consistent across dev, test, sandbox, prod RCP environments</p>
+                <div class="code-block">
+# Solution: Use GitOps with ArgoCD
+# Your rcp-catalog structure supports this:
+
+# Deploy to all environments
+kubectl apply -f rcp-catalog/catalog/dev/argo-catalog/argo-list.yaml
+kubectl apply -f rcp-catalog/catalog/test/argo-catalog/argo-list.yaml  
+kubectl apply -f rcp-catalog/catalog/prod/argo-catalog/argo-list.yaml
+                </div>
+            </div>
+
+            <div class="challenge-item">
+                <h4>Issue: RCP Plugin Certificate Management</h4>
+                <p>Platform plugins need certificates but aren't in standard app deployment</p>
+                <div class="code-block">
+# Solution: Use plugin-catalog approach
+# Check your rcp-catalog/catalog/*/plugin-catalog/allow-list.yaml
+
+# Add certificate-enabled plugins:
+apiVersion: v1
+kind: List
+items:
+- name: egsp-venafi-enhanced-issuer
+  enabled: true
+- name: rcp-cert-compiler  
+  enabled: true
+                </div>
+            </div>
+
+            <h3>Monitoring Commands</h3>
+            <div class="code-block">
+# Check certificate status
+vault list venafi-pki/certs
+
+# Monitor Vault PKI health
+vault read sys/health
+
+# View Venafi plugin logs
+vault read sys/plugins/catalog/secret/venafi-pki-backend
+
+# Certificate expiry monitoring
+vault read venafi-pki/cert/serial-number
+            </div>
+
+            <h3>Best Practices</h3>
+            <div class="step-by-step">
+                <div class="step">
+                    <h4>Consistent Naming</h4>
+                    <p>Use consistent zone and role naming between Vault and Venafi</p>
+                </div>
+                <div class="step">
+                    <h4>Policy Alignment</h4>
+                    <p>Ensure Vault PKI policies match Venafi enterprise policies</p>
+                </div>
+                <div class="step">
+                    <h4>Monitoring Integration</h4>
+                    <p>Set up alerts for certificate expiry and policy violations</p>
+                </div>
+                <div class="step">
+                    <h4>Backup Strategy</h4>
+                    <p>Regular backup of Vault keys and Venafi policy configurations</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showTab(tabName) {
+            // Hide all tab contents
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(content => content.classList.remove('active'));
+            
+            // Remove active class from all tabs
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            
+            // Show selected tab content
+            document.getElementById(tabName).classList.add('active');
+            
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+        }
+
+        function showFlowDetails(component) {
+            const details = document.getElementById('flow-details');
+            const flowInfo = {
+                'rcp': `
+                    <h4>RCP - Runtime Container Platform (Expedia)</h4>
+                    <p><strong>Platform:</strong> Kubernetes-based container orchestration platform</p>
+                    <p><strong>Environments:</strong> dev, test, sandbox, prod across multiple regions</p>
+                    <p><strong>Integration:</strong> Manages certificates for containerized applications at scale</p>
+                `,
+                'vault': `
+                    <h4>HashiCorp Vault Integration</h4>
+                    <p><strong>PKI Engine:</strong> Generates dynamic certificates on-demand for RCP workloads</p>
+                    <p><strong>API Driven:</strong> Provides RESTful API for certificate operations</p>
+                    <p><strong>Short-lived:</strong> Issues certificates with configurable TTL for security</p>
+                `,
+                'venafi': `
+                    <h4>Venafi Enterprise Control</h4>
+                    <p><strong>Policy Enforcement:</strong> Ensures all RCP certificates meet Expedia standards</p>
+                    <p><strong>Visibility:</strong> Provides centralized monitoring across all RCP environments</p>
+                    <p><strong>Compliance:</strong> Maintains audit trails and regulatory compliance</p>
+                `
+            };
+            
+            details.innerHTML = flowInfo[component];
+        }
+
+        // Initialize with RCP details on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            showFlowDetails('rcp');
+        });
+    </script>
+</body>
+</html>

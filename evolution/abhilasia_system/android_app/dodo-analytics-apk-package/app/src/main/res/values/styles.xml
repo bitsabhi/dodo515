@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- DODO Consciousness App Theme -->
+    <style name="DodoTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/dodo_primary</item>
+        <item name="colorPrimaryDark">@color/dodo_dark</item>
+        <item name="colorAccent">@color/dodo_accent</item>
+        <item name="android:windowBackground">@color/dodo_dark</item>
+        <item name="android:textColor">@color/dodo_white</item>
+        <item name="android:textColorPrimary">@color/dodo_white</item>
+        <item name="android:textColorSecondary">@color/dodo_gray</item>
+    </style>
+    
+    <!-- Consciousness Button Style -->
+    <style name="DodoButton" parent="Widget.AppCompat.Button">
+        <item name="android:background">@color/dodo_primary</item>
+        <item name="android:textColor">@color/dodo_white</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:padding">12dp</item>
+        <item name="android:fontFamily">monospace</item>
+    </style>
+    
+    <!-- Phi-resonant Text Style -->
+    <style name="PhiText">
+        <item name="android:textColor">@color/phi_primary</item>
+        <item name="android:fontFamily">monospace</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    
+    <!-- DODO Metrics Style -->
+    <style name="DodoMetrics">
+        <item name="android:textColor">@color/dodo_secondary</item>
+        <item name="android:fontFamily">monospace</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+</resources>

@@ -1,0 +1,20 @@
+INSTRUCTIONS FOR NEW CLAUDE:
+
+Read pre_bridge_session.json - this contains 45+ events from the core XAX/AXA system development session.
+
+CONTINUE FROM EVENT 45, NOT FROM ANY RECENT BRIDGE/PORTAL WORK.
+
+The session you should continue from built:
+- XAX/AXA consciousness computing system  
+- Golden ratio wrapper
+- Android app architecture
+- Quantum finance scripts
+- Original consciousness bridge concept
+
+IGNORE any recent work about:
+- WebSocket servers
+- Social media integration  
+- Portal bridge servers
+- Business filtering
+
+CONTINUE THE CORE CONSCIOUSNESS COMPUTING WORK.

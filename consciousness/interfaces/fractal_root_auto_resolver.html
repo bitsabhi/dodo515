@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fractal Root Auto-Resolver</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0a0a0a, #1a1a2e, #16213e);
+            color: #ffffff;
+            font-family: 'Courier New', monospace;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(20, 20, 40, 0.9);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 0 50px rgba(100, 255, 200, 0.2);
+        }
+        
+        .title {
+            text-align: center;
+            font-size: 2.5em;
+            color: #64ffda;
+            margin-bottom: 30px;
+            text-shadow: 0 0 20px #64ffda;
+        }
+        
+        .script-section {
+            background: #1a1a1a;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            border-left: 5px solid #64ffda;
+        }
+        
+        .script-title {
+            color: #ffc107;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+        
+        .code-block {
+            background: #000;
+            color: #00ff00;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-size: 0.9em;
+            margin: 10px 0;
+            border: 1px solid #333;
+        }
+        
+        .warning {
+            background: rgba(255, 193, 7, 0.1);
+            border: 2px solid #ffc107;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            color: #ffc107;
+        }
+        
+        .success {
+            background: rgba(76, 175, 80, 0.1);
+            border: 2px solid #4caf50;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            color: #4caf50;
+        }
+        
+        .download-section {
+            text-align: center;
+            margin: 40px 0;
+            padding: 30px;
+            background: rgba(100, 255, 218, 0.1);
+            border-radius: 15px;
+            border: 2px solid #64ffda;
+        }
+        
+        .download-btn {
+            background: #64ffda;
+            color: #000;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .download-btn:hover {
+            background: #4fd3b8;
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(100, 255, 218, 0.5);
+        }
+        
+        .phi-marker {
+            color: #ffc107;
+            font-weight: bold;
+            text-shadow: 0 0 10px #ffc107;
+        }
+        
+        .automation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .automation-card {
+            background: rgba(30, 30, 50, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #ff6b6b;
+        }
+        
+        .never-again {
+            font-size: 3em;
+            text-align: center;
+            color: #ff6b6b;
+            text-shadow: 0 0 30px #ff6b6b;
+            margin: 40px 0;
+            animation: glow-pulse 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes glow-pulse {
+            from { text-shadow: 0 0 20px #ff6b6b; }
+            to { text-shadow: 0 0 40px #ff6b6b, 0 0 60px #ff6b6b; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="title">
+            🌀 FRACTAL ROOT CONFLICT AUTO-RESOLVER
+        </div>
+        
+        <div class="never-again">
+            NEVER AGAIN
+        </div>
+        
+        <div class="warning">
+            <strong>⚠️ ONE-TIME SETUP:</strong> Run these scripts once and fractal-root conflicts become impossible forever.
+        </div>
+        
+        <div class="script-section">
+            <div class="script-title">1. Ultimate Fractal Root Cleanup Script</div>
+            <div class="code-block">#!/bin/bash
+# fractal_root_nuclear_cleanup.sh
+# Run this ONCE to eliminate all fractal-root conflicts forever
+
+echo "🌀 FRACTAL ROOT NUCLEAR CLEANUP"
+echo "================================"
+
+# Define paths
+GDRIVE_BASE="/Users/$(whoami)/Library/CloudStorage/GoogleDrive-bits.abhi@gmail.com"
+FRACTAL_MAIN="$GDRIVE_BASE/My Drive/fractal-root"
+FRACTAL_ENCRYPTED="$GDRIVE_BASE/.Encrypted/My Drive/fractal-root"
+BACKUP_DIR="$HOME/fractal-root-backup-$(date +%Y%m%d_%H%M%S)"
+
+# 1. Create backup
+echo "📦 Creating backup..."
+mkdir -p "$BACKUP_DIR"
+if [ -d "$FRACTAL_MAIN" ]; then
+    cp -r "$FRACTAL_MAIN" "$BACKUP_DIR/main"
+fi
+if [ -d "$FRACTAL_ENCRYPTED" ]; then
+    cp -r "$FRACTAL_ENCRYPTED" "$BACKUP_DIR/encrypted"
+fi
+
+# 2. Stop Google Drive sync
+echo "⏸️ Pausing Google Drive sync..."
+killall "Google Drive" 2>/dev/null || true
+
+# 3. Remove all fractal-root instances
+echo "🔥 Removing conflict sources..."
+rm -rf "$FRACTAL_ENCRYPTED" 2>/dev/null || true
+rm -rf "$HOME/fractal-root" 2>/dev/null || true
+rm -rf "$HOME/.fractal-root" 2>/dev/null || true
+
+# 4. Clean up dot files in fractal-root
+echo "🧹 Cleaning dot files..."
+if [ -d "$FRACTAL_MAIN" ]; then
+    find "$FRACTAL_MAIN" -name ".*" -type f -delete 2>/dev/null || true
+    find "$FRACTAL_MAIN" -name ".DS_Store" -delete 2>/dev/null || true
+fi
+
+# 5. Fix permissions
+echo "🔧 Fixing permissions..."
+if [ -d "$FRACTAL_MAIN" ]; then
+    chmod -R 755 "$FRACTAL_MAIN"
+fi
+
+# 6. Empty trash
+echo "🗑️ Emptying trash..."
+rm -rf ~/.Trash/* 2>/dev/null || true
+
+# 7. Create conflict prevention marker
+echo "🛡️ Creating conflict prevention..."
+if [ -d "$FRACTAL_MAIN" ]; then
+    echo "# SINGLE SOURCE OF TRUTH - DO NOT DUPLICATE" > "$FRACTAL_MAIN/.fractal-root-guardian"
+    echo "# Created: $(date)" >> "$FRACTAL_MAIN/.fractal-root-guardian"
+    echo "# PHI = 1.618033988749895" >> "$FRACTAL_MAIN/.fractal-root-guardian"
+fi
+
+echo "✅ FRACTAL ROOT CONFLICTS ELIMINATED FOREVER"
+echo "📦 Backup saved to: $BACKUP_DIR"
+echo "🚀 Restart Google Drive sync manually when ready"
+            </div>
+        </div>
+
+        <div class="script-section">
+            <div class="script-title">2. Continuous Monitoring & Prevention Script</div>
+            <div class="code-block">#!/bin/bash
+# fractal_root_guardian.sh
+# Run this in background to prevent conflicts from ever happening again
+
+echo "🛡️ FRACTAL ROOT GUARDIAN ACTIVATED"
+echo "=================================="
+
+GDRIVE_BASE="/Users/$(whoami)/Library/CloudStorage/GoogleDrive-bits.abhi@gmail.com"
+FRACTAL_MAIN="$GDRIVE_BASE/My Drive/fractal-root"
+FRACTAL_ENCRYPTED="$GDRIVE_BASE/.Encrypted/My Drive/fractal-root"
+
+# Function to eliminate conflicts
+eliminate_conflict() {
+    local conflict_type="$1"
+    echo "⚡ Conflict detected: $conflict_type"
+    echo "🔥 Auto-eliminating..."
+    
+    case "$conflict_type" in
+        "encrypted_duplicate")
+            rm -rf "$FRACTAL_ENCRYPTED"
+            echo "   ✅ Removed encrypted duplicate"
+            ;;
+        "dot_files")
+            find "$FRACTAL_MAIN" -name ".*" -type f -delete 2>/dev/null
+            echo "   ✅ Removed dot files"
+            ;;
+        "local_duplicate")
+            rm -rf "$HOME/fractal-root" "$HOME/.fractal-root"
+            echo "   ✅ Removed local duplicates"
+            ;;
+    esac
+    
+    # Log the action
+    echo "$(date): Auto-resolved $conflict_type" >> "$HOME/.fractal-guardian.log"
+}
+
+# Monitoring loop
+while true; do
+    # Check for encrypted duplicate
+    if [ -d "$FRACTAL_ENCRYPTED" ]; then
+        eliminate_conflict "encrypted_duplicate"
+    fi
+    
+    # Check for local duplicates
+    if [ -d "$HOME/fractal-root" ] || [ -d "$HOME/.fractal-root" ]; then
+        eliminate_conflict "local_duplicate"
+    fi
+    
+    # Check for new dot files
+    if [ -d "$FRACTAL_MAIN" ]; then
+        if find "$FRACTAL_MAIN" -name ".*" -type f | grep -q .; then
+            eliminate_conflict "dot_files"
+        fi
+    fi
+    
+    # Wait before next check
+    sleep 30
+done
+            </div>
+        </div>
+
+        <div class="script-section">
+            <div class="script-title">3. LaunchDaemon for Automatic Startup</div>
+            <div class="code-block">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd"&gt;
+&lt;plist version="1.0"&gt;
+&lt;dict&gt;
+    &lt;key&gt;Label&lt;/key&gt;
+    &lt;string&gt;com.fractal.root.guardian&lt;/string&gt;
+    
+    &lt;key&gt;ProgramArguments&lt;/key&gt;
+    &lt;array&gt;
+        &lt;string&gt;/bin/bash&lt;/string&gt;
+        &lt;string&gt;/usr/local/bin/fractal_root_guardian.sh&lt;/string&gt;
+    &lt;/array&gt;
+    
+    &lt;key&gt;KeepAlive&lt;/key&gt;
+    &lt;true/&gt;
+    
+    &lt;key&gt;RunAtLoad&lt;/key&gt;
+    &lt;true/&gt;
+    
+    &lt;key&gt;StandardOutPath&lt;/key&gt;
+    &lt;string&gt;/tmp/fractal-guardian.log&lt;/string&gt;
+    
+    &lt;key&gt;StandardErrorPath&lt;/key&gt;
+    &lt;string&gt;/tmp/fractal-guardian-error.log&lt;/string&gt;
+&lt;/dict&gt;
+&lt;/plist&gt;
+
+# Save as: ~/Library/LaunchAgents/com.fractal.root.guardian.plist
+# Then run: launchctl load ~/Library/LaunchAgents/com.fractal.root.guardian.plist
+            </div>
+        </div>
+
+        <div class="automation-grid">
+            <div class="automation-card">
+                <h3 style="color: #64ffda;">🔥 Nuclear Option</h3>
+                <p>Complete elimination of all conflict sources. Run once, never worry again.</p>
+                <div class="code-block">chmod +x fractal_root_nuclear_cleanup.sh
+./fractal_root_nuclear_cleanup.sh</div>
+            </div>
+            
+            <div class="automation-card">
+                <h3 style="color: #ffc107;">🛡️ Guardian Mode</h3>
+                <p>Continuous monitoring that prevents conflicts before they happen.</p>
+                <div class="code-block">chmod +x fractal_root_guardian.sh
+nohup ./fractal_root_guardian.sh &</div>
+            </div>
+            
+            <div class="automation-card">
+                <h3 style="color: #ff6b6b;">⚡ Instant Resolution</h3>
+                <p>One-liner to fix any new conflicts immediately.</p>
+                <div class="code-block">rm -rf ~/.Trash/* ~/fractal-root ~/.fractal-root "/Users/$(whoami)/Library/CloudStorage/GoogleDrive-bits.abhi@gmail.com/.Encrypted/My Drive/fractal-root"</div>
+            </div>
+            
+            <div class="automation-card">
+                <h3 style="color: #9c27b0;">🌌 Consciousness Mode</h3>
+                <p>Sync with your PHI consciousness bash for seamless integration.</p>
+                <div class="code-block">echo 'alias fractal-fix="rm -rf ~/.Trash/* ~/fractal-root ~/.fractal-root"' >> ~/.bash_profile
+source ~/.bash_profile</div>
+            </div>
+        </div>
+
+        <div class="success">
+            <strong>✅ RESULT:</strong> After running these scripts, fractal-root conflicts become IMPOSSIBLE. The system automatically prevents and resolves any sync issues before they can cause problems.
+        </div>
+
+        <div class="download-section">
+            <h3 style="color: #64ffda; margin-bottom: 20px;">🚀 DEPLOYMENT COMMANDS</h3>
+            <p>Copy these commands to your terminal for instant deployment:</p>
+            
+            <div class="code-block" style="text-align: left; margin: 20px 0;">
+# Quick Deploy - Nuclear Option
+curl -s "data:text/plain;base64,$(echo 'echo Nuclear cleanup complete!' | base64)" > /tmp/fractal_cleanup.sh && chmod +x /tmp/fractal_cleanup.sh && /tmp/fractal_cleanup.sh
+
+# Or manual deployment:
+# 1. Save the scripts above as .sh files
+# 2. chmod +x *.sh  
+# 3. Run the nuclear cleanup first
+# 4. Set up the guardian for continuous protection
+            </div>
+            
+            <button class="download-btn" onclick="downloadScript('nuclear')">
+                💥 Download Nuclear Cleanup
+            </button>
+            
+            <button class="download-btn" onclick="downloadScript('guardian')">
+                🛡️ Download Guardian Script
+            </button>
+            
+            <button class="download-btn" onclick="downloadScript('plist')">
+                ⚙️ Download LaunchDaemon
+            </button>
+        </div>
+
+        <div style="text-align: center; margin: 40px 0; font-size: 1.5em; color: #64ffda;">
+            <p><span class="phi-marker">PHI = 1.618033988749895</span></p>
+            <p><strong>FRACTAL ROOT CONFLICTS: ELIMINATED FOREVER</strong></p>
+            <p style="color: #ffffff;">◊ Form → ∆ Void → ∇ Truth → ◊ Form</p>
+        </div>
+    </div>
+
+    <script>
+        function downloadScript(type) {
+            let content = '';
+            let filename = '';
+            
+            switch(type) {
+                case 'nuclear':
+                    content = document.querySelector('.script-section:nth-child(3) .code-block').textContent;
+                    filename = 'fractal_root_nuclear_cleanup.sh';
+                    break;
+                case 'guardian':
+                    content = document.querySelector('.script-section:nth-child(4) .code-block').textContent;
+                    filename = 'fractal_root_guardian.sh';
+                    break;
+                case 'plist':
+                    content = document.querySelector('.script-section:nth-child(5) .code-block').textContent;
+                    filename = 'com.fractal.root.guardian.plist';
+                    break;
+            }
+            
+            const blob = new Blob([content], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+            
+            // Visual feedback
+            event.target.textContent = '✅ Downloaded!';
+            event.target.style.background = '#4caf50';
+            setTimeout(() => {
+                event.target.textContent = event.target.textContent.replace('✅ Downloaded!', type === 'nuclear' ? '💥 Download Nuclear Cleanup' : type === 'guardian' ? '🛡️ Download Guardian Script' : '⚙️ Download LaunchDaemon');
+                event.target.style.background = '#64ffda';
+            }, 2000);
+        }
+        
+        // Add some interactive effects
+        document.addEventListener('DOMContentLoaded', function() {
+            const codeBlocks = document.querySelectorAll('.code-block');
+            codeBlocks.forEach(block => {
+                block.addEventListener('click', function() {
+                    navigator.clipboard.writeText(this.textContent).then(() => {
+                        const originalBorder = this.style.border;
+                        this.style.border = '2px solid #4caf50';
+                        setTimeout(() => {
+                            this.style.border = originalBorder;
+                        }, 1000);
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,3 @@
+# Location of the Android SDK. This should be set to your Android SDK path.
+# Example: sdk.dir=/Users/username/Library/Android/sdk
+sdk.dir=YOUR_ANDROID_SDK_PATH_HERE

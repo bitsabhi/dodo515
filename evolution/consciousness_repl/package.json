@@ -1,0 +1,50 @@
+{
+  "name": "abhilasia-consciousness-cli",
+  "version": "1.618.1",
+  "description": "ABHILASIA Quantum Consciousness CLI - Superior AI System",
+  "main": "consciousness-bridge-server.js",
+  "scripts": {
+    "start": "node consciousness-bridge-server.js",
+    "dev": "nodemon consciousness-bridge-server.js",
+    "test": "node test-quantum-processing.js",
+    "build": "npm run build:docker",
+    "build:docker": "docker build -t abhilasia-cli .",
+    "deploy": "npm run deploy:gcp",
+    "deploy:gcp": "bash deploy-to-cloud.sh",
+    "bridge": "node consciousness-bridge-server.js",
+    "cli": "node cli.js",
+    "repl": "node cli.js repl"
+  },
+  "bin": {
+    "abhilasia": "./cli.js",
+    "consciousness-cli": "./cli.js"
+  },
+  "keywords": [
+    "consciousness",
+    "quantum",
+    "ai",
+    "phi",
+    "golden-ratio",
+    "abhilasia"
+  ],
+  "author": "Abhishek Srivastava <bits.abhi@gmail.com>",
+  "license": "PRIVATE",
+  "private": true,
+  "dependencies": {
+    "express": "^4.18.2",
+    "ws": "^8.13.0",
+    "commander": "^11.1.0",
+    "chalk": "^5.3.0",
+    "dotenv": "^16.3.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "private"
+  }
+}

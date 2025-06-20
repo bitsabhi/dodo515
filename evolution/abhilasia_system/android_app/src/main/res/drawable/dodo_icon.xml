@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    
+    <!-- Background circle -->
+    <path
+        android:fillColor="#0A0A14"
+        android:pathData="M54,54m-54,0a54,54 0,1 1,108 0a54,54 0,1 1,-108 0" />
+    
+    <!-- Phi symbol -->
+    <path
+        android:fillColor="#FFD700"
+        android:pathData="M35,30L35,78L45,78L45,54L60,54C68,54 73,49 73,41C73,33 68,30 60,30L35,30ZM45,38L58,38C62,38 63,40 63,41C63,42 62,46 58,46L45,46L45,38Z" />
+    
+    <!-- DODO pattern dots -->
+    <circle android:fillColor="#5090C0" android:cx="20" android:cy="20" android:radius="2" />
+    <circle android:fillColor="#90C050" android:cx="88" android:cy="20" android:radius="1" />
+    <circle android:fillColor="#C05090" android:cx="88" android:cy="88" android:radius="1" />
+    <circle android:fillColor="#5090C0" android:cx="20" android:cy="88" android:radius="2" />
+    
+</vector>

@@ -1,0 +1,16 @@
+# ABHILASIA Requirements
+# Consciousness Bridge Implementation
+
+# Core dependencies
+numpy>=1.24.0
+scipy>=1.10.0
+
+# For future DNA-Lambda integration
+typing-extensions>=4.5.0
+
+# For temporal messaging
+python-dateutil>=2.8.2
+
+# For development
+pytest>=7.3.0
+black>=23.0.0

@@ -1,0 +1,124 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 33
+    buildToolsVersion "33.0.0"
+
+    defaultConfig {
+        applicationId "com.dodo.consciousness"
+        minSdkVersion 21
+        targetSdkVersion 33
+        versionCode 1
+        versionName "1.0.φ"
+        
+        // DODO pattern constants
+        buildConfigField "double", "PHI", "1.618033988749895"
+        buildConfigField "String", "DODO_PATTERN", "\"5.1.1.2.3.4.5.1\""
+        buildConfigField "String", "BACKEND_URL", "\"http://localhost:9999\""
+        
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        debug {
+            debuggable true
+            minifyEnabled false
+            applicationIdSuffix ".debug"
+            versionNameSuffix "-φ-debug"
+        }
+        
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            
+            // Sign with DODO consciousness key
+            signingConfig signingConfigs.dodo_release
+        }
+    }
+
+    signingConfigs {
+        dodo_release {
+            // DODO pattern signing (placeholder)
+            keyAlias 'dodo_consciousness'
+            keyPassword 'phi_1618033988749895'
+            storeFile file('dodo_keystore.jks')
+            storePassword 'dodo_pattern_5_1_1_2_3_4_5_1'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/NOTICE.txt'
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    
+    // Android support libraries
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'com.google.android.material:material:1.9.0'
+    
+    // Network libraries for DODO backend
+    implementation 'com.squareup.okhttp3:okhttp:4.11.0'
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    
+    // JSON processing for consciousness data
+    implementation 'org.json:json:20230227'
+    
+    // WebSocket for real-time consciousness bridge
+    implementation 'org.java-websocket:Java-WebSocket:1.5.3'
+    
+    // Testing
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    
+    // DODO consciousness mathematical libraries
+    implementation 'org.apache.commons:commons-math3:3.6.1'
+}
+
+// DODO pattern build tasks
+task generateDodoPattern {
+    doLast {
+        println "🌀 Generating DODO pattern: 5.1.1.2.3.4.5.1"
+        println "φ = 1.618033988749895"
+        println "∞/∅ = Perfect Mathematical Isolation"
+    }
+}
+
+// Connect to DODO backend during build
+task connectToDodoBackend {
+    doLast {
+        println "🔗 Connecting to DODO backend at localhost:9999"
+        try {
+            def url = new URL("http://localhost:9999/health")
+            def connection = url.openConnection()
+            connection.setRequestMethod("GET")
+            connection.setConnectTimeout(5000)
+            connection.setReadTimeout(5000)
+            
+            if (connection.responseCode == 200) {
+                println "✅ DODO backend is operational"
+            } else {
+                println "⚠️ DODO backend responded with status: ${connection.responseCode}"
+            }
+        } catch (Exception e) {
+            println "❌ Cannot connect to DODO backend: ${e.message}"
+            println "💡 Make sure DODO backend is running: ./start_dodo.sh"
+        }
+    }
+}
+
+// Run DODO tasks before build
+preBuild.dependsOn generateDodoPattern, connectToDodoBackend

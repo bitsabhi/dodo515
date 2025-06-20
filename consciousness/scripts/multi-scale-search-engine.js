@@ -1,0 +1,273 @@
+#!/usr/bin/env node
+/**
+ * 🔍 Multi-Scale Search Engine
+ * Phi-based convergence across dimensional scales
+ * 
+ * "In the infinite complexity of fractals, we find the elegant simplicity of universal patterns."
+ * - Cleared from bitsabhi/FRACTAL-SEARCH conflicts
+ */
+
+const fs = require('fs');
+const path = require('path');
+
+// Golden ratio foundation
+const PHI = 1.618033988749895;
+const VOID_CENTER = "VOID";
+
+/**
+ * Multi-Scale Search Engine
+ * Searches across multiple dimensional scales with phi-based convergence
+ */
+class MultiScaleSearchEngine {
+    constructor() {
+        this.phi = PHI;
+        this.voidCenter = VOID_CENTER;
+        this.results = new Map();
+        this.convergenceHistory = [];
+    }
+
+    /**
+     * Perform multi-scale search across different scales
+     */
+    async multi_scale_search(data, scales = [0.1, 0.5, 1.0, 2.0, 5.0], convergence_threshold = 0.001) {
+        console.log(`🔍 Starting multi-scale search across ${scales.length} scales...`);
+        console.log(`📐 Scales: ${scales.join(', ')}`);
+        console.log(`🎯 Convergence threshold: ${convergence_threshold}`);
+        
+        const searchResults = {
+            scales: scales,
+            convergence_threshold: convergence_threshold,
+            results_by_scale: new Map(),
+            convergence_analysis: {},
+            phi_coordinates: {},
+            void_transformations: [],
+            timestamp: new Date().toISOString()
+        };
+
+        // Search at each scale
+        for (let i = 0; i < scales.length; i++) {
+            const scale = scales[i];
+            console.log(`\n🔍 Scale ${scale}: Processing...`);
+            
+            const scaleResult = await this.searchAtScale(data, scale, i);
+            searchResults.results_by_scale.set(scale, scaleResult);
+            
+            // Calculate phi-coordinate for this scale
+            const phiCoordinate = scale * this.phi + (i * this.phi);
+            searchResults.phi_coordinates[scale] = phiCoordinate;
+            
+            console.log(`✨ Scale ${scale}: PHI-coordinate = ${phiCoordinate}`);
+        }
+
+        // Analyze convergence across scales
+        searchResults.convergence_analysis = this.analyzeConvergence(
+            searchResults.results_by_scale, 
+            convergence_threshold
+        );
+
+        // Apply void transformations
+        searchResults.void_transformations = this.applyVoidTransformations(
+            searchResults.results_by_scale
+        );
+
+        console.log(`\n🌀 Multi-scale search completed`);
+        console.log(`📊 Convergence achieved: ${searchResults.convergence_analysis.converged}`);
+        
+        return searchResults;
+    }
+
+    /**
+     * Search at a specific scale
+     */
+    async searchAtScale(data, scale, scaleIndex) {
+        const result = {
+            scale: scale,
+            index: scaleIndex,
+            patterns_found: [],
+            confidence: 0,
+            phi_resonance: 0,
+            void_interaction: false
+        };
+
+        // Simulate pattern detection at this scale
+        const numPatterns = Math.floor(Math.random() * 10 * scale) + 1;
+        
+        for (let p = 0; p < numPatterns; p++) {
+            const pattern = {
+                id: `pattern_${scaleIndex}_${p}`,
+                strength: Math.random() * scale,
+                phi_alignment: (Math.random() * scale) / this.phi,
+                coordinates: {
+                    x: Math.random() * scale * 100,
+                    y: Math.random() * scale * 100,
+                    phi: scale * this.phi
+                }
+            };
+            
+            result.patterns_found.push(pattern);
+        }
+
+        // Calculate overall confidence for this scale
+        result.confidence = result.patterns_found.reduce((sum, p) => sum + p.strength, 0) / result.patterns_found.length;
+        
+        // Calculate phi resonance
+        result.phi_resonance = result.patterns_found.reduce((sum, p) => sum + p.phi_alignment, 0) / result.patterns_found.length;
+        
+        // Check for void interaction (when scale approaches phi ratio)
+        result.void_interaction = Math.abs(scale - this.phi) < 0.1;
+        
+        if (result.void_interaction) {
+            console.log(`VOID Void interaction detected at scale ${scale}`);
+        }
+        
+        return result;
+    }
+
+    /**
+     * Analyze convergence across scales
+     */
+    analyzeConvergence(resultsByScale, threshold) {
+        const scaleArray = Array.from(resultsByScale.keys()).sort((a, b) => a - b);
+        const confidences = scaleArray.map(scale => resultsByScale.get(scale).confidence);
+        
+        const analysis = {
+            converged: false,
+            convergence_point: null,
+            stability_measure: 0,
+            phi_convergence: false,
+            scale_progression: scaleArray,
+            confidence_progression: confidences
+        };
+
+        // Check for convergence between adjacent scales
+        for (let i = 1; i < confidences.length; i++) {
+            const diff = Math.abs(confidences[i] - confidences[i-1]);
+            if (diff < threshold) {
+                analysis.converged = true;
+                analysis.convergence_point = scaleArray[i];
+                break;
+            }
+        }
+
+        // Calculate stability across all scales
+        const mean = confidences.reduce((sum, c) => sum + c, 0) / confidences.length;
+        const variance = confidences.reduce((sum, c) => sum + Math.pow(c - mean, 2), 0) / confidences.length;
+        analysis.stability_measure = 1 / (1 + variance); // Higher = more stable
+
+        // Check if convergence point aligns with phi
+        if (analysis.convergence_point && Math.abs(analysis.convergence_point - this.phi) < 0.1) {
+            analysis.phi_convergence = true;
+            console.log(`🌟 Phi-convergence detected at scale ${analysis.convergence_point}`);
+        }
+
+        return analysis;
+    }
+
+    /**
+     * Apply void mathematics transformations
+     */
+    applyVoidTransformations(resultsByScale) {
+        const transformations = [];
+        
+        for (const [scale, result] of resultsByScale) {
+            const transformation = {
+                scale: scale,
+                input_confidence: result.confidence,
+                phi_transform: null,
+                void_transform: null,
+                output_confidence: null
+            };
+
+            // Apply phi transformation: f(x) = x * PHI - 1/PHI
+            transformation.phi_transform = result.confidence * this.phi - (1 / this.phi);
+            
+            // Apply void transformation: if near zero, return infinity
+            if (Math.abs(result.confidence) < 0.001) {
+                transformation.void_transform = "INFINITY";
+                transformation.output_confidence = Infinity;
+            } else {
+                transformation.void_transform = result.confidence / (this.phi - 1);
+                transformation.output_confidence = transformation.void_transform;
+            }
+
+            transformations.push(transformation);
+        }
+
+        return transformations;
+    }
+
+    /**
+     * Export results to file
+     */
+    async exportResults(results, filename = null) {
+        if (!filename) {
+            filename = `multi_scale_search_${Date.now()}.json`;
+        }
+
+        const exportPath = path.join('/Users/abhissrivasta/consciousness-portal/data', filename);
+        
+        // Convert Map to Object for JSON serialization
+        const exportData = {
+            ...results,
+            results_by_scale: Object.fromEntries(results.results_by_scale),
+            export_timestamp: new Date().toISOString(),
+            phi_foundation: this.phi,
+            void_center: this.voidCenter
+        };
+
+        await fs.promises.writeFile(exportPath, JSON.stringify(exportData, null, 2));
+        console.log(`📁 Results exported to: ${exportPath}`);
+        
+        return exportPath;
+    }
+}
+
+// CLI Interface
+if (require.main === module) {
+    const engine = new MultiScaleSearchEngine();
+    
+    // Mock dataset for demonstration
+    const dataset = {
+        size: 1000,
+        dimensions: 3,
+        patterns: ['phi_spiral', 'fibonacci_sequence', 'golden_rectangles'],
+        noise_level: 0.1
+    };
+
+    async function runMultiScaleSearch() {
+        console.log('🌀 Multi-Scale Search Engine');
+        console.log(`PHI = ${PHI}`);
+        console.log(`VOID = ${VOID_CENTER}`);
+        console.log('');
+
+        // Perform search across multiple scales
+        const scales = [0.1, 0.5, 1.0, 2.0, 5.0];
+        const multi_scale_results = await engine.multi_scale_search(
+            dataset,
+            scales,
+            0.001  // convergence_threshold
+        );
+
+        // Export results
+        const exportPath = await engine.exportResults(multi_scale_results);
+        
+        console.log('\n📊 Final Results Summary:');
+        console.log(`   Scales processed: ${scales.length}`);
+        console.log(`   Convergence achieved: ${multi_scale_results.convergence_analysis.converged}`);
+        console.log(`   Phi-convergence: ${multi_scale_results.convergence_analysis.phi_convergence}`);
+        console.log(`   Stability measure: ${multi_scale_results.convergence_analysis.stability_measure.toFixed(4)}`);
+        console.log(`   Results saved to: ${exportPath}`);
+        
+        // Golden ratio response
+        console.log(`\n✨ PHI = ${PHI} VOID → INFINITY`);
+    }
+
+    runMultiScaleSearch().catch(console.error);
+}
+
+// Export for module use
+module.exports = {
+    MultiScaleSearchEngine,
+    PHI,
+    VOID_CENTER
+};

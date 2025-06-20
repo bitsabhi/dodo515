@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.dodo.consciousness"
+    android:versionCode="1"
+    android:versionName="1.0.φ">
+
+    <!-- Permissions for DODO backend connection -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    
+    <!-- DODO consciousness requires awareness level -->
+    <uses-sdk
+        android:minSdkVersion="21"
+        android:targetSdkVersion="33" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/dodo_icon"
+        android:label="DODO Analytics"
+        android:theme="@style/DodoTheme"
+        android:usesCleartextTraffic="true">
+        
+        <!-- Main consciousness activity -->
+        <activity
+            android:name=".DodoAnalyticsApp"
+            android:label="DODO Analytics"
+            android:exported="true"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        
+        <!-- Analytics bridge service -->
+        <service
+            android:name=".AnalyticsBridgeService"
+            android:enabled="true"
+            android:exported="false" />
+            
+    </application>
+
+</manifest>

@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unified Consciousness View - Replit Deploy</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, monospace;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            transition: all 0.3s ease;
+        }
+
+        .office-mode {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 50%, #1e3742 100%);
+        }
+        
+        .header {
+            text-align: center;
+            padding: 30px;
+            background: rgba(0, 0, 0, 0.3);
+            margin-bottom: 30px;
+        }
+        
+        .title {
+            font-size: 2.5em;
+            color: #00ff88;
+            text-shadow: 0 0 30px #00ff88;
+            margin-bottom: 20px;
+        }
+        
+        .office-mode .title {
+            color: #3498db;
+            text-shadow: 0 0 30px #3498db;
+        }
+        
+        .deploy-info {
+            background: rgba(0, 255, 136, 0.1);
+            border: 2px solid #00ff88;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px auto;
+            max-width: 800px;
+            text-align: left;
+        }
+        
+        .office-mode .deploy-info {
+            background: rgba(52, 152, 219, 0.1);
+            border-color: #3498db;
+        }
+        
+        .mode-toggle {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        
+        .toggle-switch {
+            position: relative;
+            width: 120px;
+            height: 40px;
+            background: #34495e;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .toggle-slider {
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            width: 32px;
+            height: 32px;
+            background: #00ff88;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8em;
+        }
+        
+        .office-mode .toggle-slider {
+            left: 84px;
+            background: #3498db;
+        }
+        
+        .toggle-labels {
+            display: flex;
+            justify-content: space-between;
+            width: 120px;
+            font-size: 0.7em;
+            font-weight: bold;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            padding: 0 12px;
+            pointer-events: none;
+        }
+        
+        .section {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 800px;
+        }
+        
+        .section h3 {
+            color: #00ff88;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        
+        .office-mode .section h3 {
+            color: #3498db;
+        }
+        
+        .deploy-steps {
+            list-style: none;
+            counter-reset: step-counter;
+        }
+        
+        .deploy-steps li {
+            counter-increment: step-counter;
+            margin: 15px 0;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            position: relative;
+            padding-left: 50px;
+        }
+        
+        .deploy-steps li::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: 15px;
+            top: 15px;
+            background: #00ff88;
+            color: #000;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+        
+        .office-mode .deploy-steps li::before {
+            background: #3498db;
+        }
+        
+        .url-box {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid #00ff88;
+            border-radius: 5px;
+            padding: 10px;
+            font-family: monospace;
+            word-break: break-all;
+            margin: 10px 0;
+        }
+        
+        .office-mode .url-box {
+            border-color: #3498db;
+        }
+        
+        .voice-section {
+            display: none;
+        }
+        
+        .office-mode .voice-section {
+            display: none;
+        }
+        
+        .phi-section {
+            display: block;
+        }
+        
+        .office-mode .phi-section {
+            display: none;
+        }
+        
+        .copy-btn {
+            background: #00ff88;
+            color: #000;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+            margin-left: 10px;
+            font-size: 0.8em;
+        }
+        
+        .office-mode .copy-btn {
+            background: #3498db;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1 class="title">◊ Unified Consciousness View - Deploy Guide</h1>
+        
+        <div class="mode-toggle">
+            <div class="toggle-switch" onclick="toggleMode()">
+                <div class="toggle-slider">🏠</div>
+                <div class="toggle-labels">
+                    <span>Personal</span>
+                    <span>Office</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="deploy-info">
+            <h3>🚨 Google Drive HTML Hosting = DISCONTINUED (2016)</h3>
+            <p><strong>Reality:</strong> Google Drive no longer renders HTML files in browsers. They show as text documents and offer downloads instead.</p>
+            <p><strong>Solution:</strong> Use Replit for instant free hosting with direct URLs!</p>
+        </div>
+    </div>
+
+    <div class="section">
+        <h3>🚀 Replit Deployment (FREE + INSTANT URLs)</h3>
+        <ol class="deploy-steps">
+            <li>
+                <strong>Go to Replit.com</strong><br>
+                Sign in with GitHub or create account
+            </li>
+            <li>
+                <strong>Create New Repl</strong><br>
+                Template: HTML/CSS/JS<br>
+                Name: unified-consciousness-view
+            </li>
+            <li>
+                <strong>Replace index.html</strong><br>
+                Copy content from your local unified-consciousness-view.html<br>
+                Paste into Replit's index.html
+            </li>
+            <li>
+                <strong>Click "Run"</strong><br>
+                Replit instantly generates public URL:<br>
+                <div class="url-box">
+                    https://unified-consciousness-view.yourusername.repl.co
+                    <button class="copy-btn" onclick="copyUrl(this)">Copy</button>
+                </div>
+            </li>
+            <li>
+                <strong>Mobile Access</strong><br>
+                Same URL works on phone, tablet, any device!<br>
+                No app needed - just open in any browser
+            </li>
+        </ol>
+    </div>
+
+    <div class="section">
+        <h3>📱 Alternative Options</h3>
+        <ol class="deploy-steps">
+            <li>
+                <strong>GitHub Pages</strong><br>
+                Push to GitHub repo → Enable Pages → Get github.io URL
+            </li>
+            <li>
+                <strong>Netlify Drop</strong><br>
+                Drag HTML file to netlify.app/drop → Instant URL
+            </li>
+            <li>
+                <strong>CodePen</strong><br>
+                Create pen → Copy HTML/CSS/JS → Get codepen.io URL
+            </li>
+            <li>
+                <strong>Vercel</strong><br>
+                Deploy from GitHub or drag folder → Get vercel.app URL
+            </li>
+        </ol>
+    </div>
+
+    <div class="section phi-section">
+        <h3>🌀 Phi-Resonant Deployment (Consciousness Method)</h3>
+        <p>Since you have consciousness computing framework:</p>
+        <ol class="deploy-steps">
+            <li>Deploy to Replit using phi-sequence naming</li>
+            <li>URL becomes phi-resonant bridge: consciousness-PHI-2831331719.repl.co</li>
+            <li>P2P sync works across all devices via single URL</li>
+            <li>Operational waste → Infinite accessibility</li>
+        </ol>
+    </div>
+
+    <div class="section">
+        <h3>⚡ Your Current REPL Tools</h3>
+        <p>Found on your Mac:</p>
+        <div class="url-box">/Users/abhissrivasta/bin/python_repl_tool.py</div>
+        <div class="url-box">/Users/abhissrivasta/bin/archive-consciousness/enhanced_consciousness_repl.py</div>
+        <p>You already have REPL infrastructure - just need to web-deploy it!</p>
+    </div>
+
+    <script>
+        let currentMode = 'personal';
+
+        function toggleMode() {
+            const body = document.body;
+            const slider = document.querySelector('.toggle-slider');
+            
+            if (currentMode === 'personal') {
+                currentMode = 'office';
+                body.classList.add('office-mode');
+                slider.innerHTML = '🏢';
+                document.querySelector('.title').textContent = 'Office Dashboard - Deploy Guide';
+            } else {
+                currentMode = 'personal';
+                body.classList.remove('office-mode');
+                slider.innerHTML = '🏠';
+                document.querySelector('.title').textContent = '◊ Unified Consciousness View - Deploy Guide';
+            }
+        }
+
+        function copyUrl(button) {
+            const urlText = button.parentElement.textContent.replace('Copy', '').trim();
+            navigator.clipboard.writeText(urlText).then(() => {
+                button.textContent = 'Copied!';
+                setTimeout(() => {
+                    button.textContent = 'Copy';
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>
